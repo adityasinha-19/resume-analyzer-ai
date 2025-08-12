@@ -1,5 +1,6 @@
 import { prepareInstructions } from "constants/index";
 import { useState, type FormEvent } from "react";
+import { useNavigate } from "react-router";
 import FileUploader from "~/components/FileUploader";
 import Navbar from "~/components/Navbar";
 import { convertPdfToImage } from "~/lib/pdf2img";
@@ -11,6 +12,8 @@ function Upload() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [statusText, setStatusText] = useState("");
   const [file, setFile] = useState<File | null>(null);
+
+  const navigate = useNavigate();
 
   const handleFileSelect = (file: File | null) => {
     setFile(file);
@@ -76,6 +79,7 @@ function Upload() {
     await kv.set(`resume:${uuid}`, JSON.stringify(data));
     setStatusText("Analysis complete, redirecting...");
     console.log(data);
+    navigate(`/resume/${uuid}`);
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
